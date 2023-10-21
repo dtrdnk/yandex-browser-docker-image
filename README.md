@@ -33,6 +33,19 @@ Usage
 `docker run -d --volumes-from chrome-profile qgbcs/yandex /crdonly` (no port needs to be exposed)
 `/crdonly` command will run chrome-remote-desktop in foreground.
 
+#### example rootless starting with audio device forwarding
+```bash
+docker run -ti --rm \                                                                                                                                 (⎈|minikube:default)
+    -e PULSE_SERVER=unix:/run/user/1000/pulse/socket \
+    -p 127.0.0.1:5900:5900 \
+    -v /run/user/1000/pulse/native:/run/user/1000/pulse/socket \
+    -v ~/.config/yandex-browser:/home/chrome/.config/yandex-browser \
+    --name yandex -u 1000:1000 -d \
+    --device /dev/video0 \
+    --device /dev/video1 \
+    yandex:latest
+```
+
 Docker ホスト(ヘッドレス可！)で走らせれば、「艦これ」等 Flash ブラウザゲームを iPad/iPhone/Android 等上の Chrome リモート デスクトップ アプリで一応プレイ可能になります。サウンド付き(遅延があります)。
 Yandex は英語版ですが、Web ページ用の日本語フォントは含まれています。[詳しくはこちら。][3]
 

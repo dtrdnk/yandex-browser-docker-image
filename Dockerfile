@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 LABEL maintainer="qgbcs"
 
@@ -6,6 +6,7 @@ ENV VNC_SCREEN_SIZE 1366x768
 
 RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list && apt-get update \
 	&& apt-get install -y --no-install-recommends \
+    curl \
 	gdebi \
 	gnupg2 \
 	fonts-takao \
@@ -15,10 +16,11 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list &&
 	fluxbox \
 	eterm \
  fonts-arphic-ukai \
- fonts-arphic-uming 
- 
+ fonts-arphic-uming
 
-COPY Yandex.deb	/tmp/Yandex.deb
+RUN curl -k \
+        https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/yandex-browser-stable_23.9.1.962-1_amd64.deb \
+	-o /tmp/Yandex.deb
 
 RUN gdebi --non-interactive /tmp/Yandex.deb
 
